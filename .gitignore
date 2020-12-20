@@ -5,6 +5,8 @@
 *.suo
 *.db
 *.ipch
+*.json
+*.sqlite
 Debug
 
 # Prerequisites
