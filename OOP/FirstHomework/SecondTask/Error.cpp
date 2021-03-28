@@ -1,12 +1,6 @@
-#define _CRTDBG_MAP_ALLOC
-#include <cstdlib>
-#include <crtdbg.h>
-
-#ifdef _DEBUG
-#define new new ( _NORMAL_BLOCK , __FILE__ , __LINE__ )
-#endif
-
+#pragma warning(disable : 4996)
 #include "Error.hpp"
+
 Error::Error() {
 	this->error_type = ErrorType::None;
 	this->message = nullptr;
@@ -18,7 +12,7 @@ Error::Error(ErrorType init_type, const char* init_message) {
 	}
 	else {
 		message = new char[strlen(init_message) + 1];
-		strcpy_s(message, strlen(init_message) + 1, init_message);
+		strcpy(message, init_message);
 	}
 }
 Error::Error(const Error& other_err) {
@@ -28,7 +22,7 @@ Error::Error(const Error& other_err) {
 	}
 	else {
 		this->message = new char[strlen(other_err.message) + 1];
-		strcpy_s(message, strlen(other_err.message) + 1, other_err.message);
+		strcpy(message, other_err.message);
 	}
 }
 Error& Error::operator=(const Error& other_err) {
@@ -41,7 +35,7 @@ Error& Error::operator=(const Error& other_err) {
 		}
 		else {
 			this->message = new char[strlen(other_err.message) + 1];
-			strcpy_s(message, strlen(other_err.message) + 1, other_err.message);
+			strcpy(message, other_err.message);
 		}
 	}
 
@@ -67,7 +61,7 @@ Error Error::newBuildFailed(const char* message) {
 }
 
 Error Error::newWarning(const char* message) {
-	
+
 	Error err(ErrorType::Warning, message);
 	return err;
 }
