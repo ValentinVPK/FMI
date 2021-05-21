@@ -51,13 +51,10 @@ MagicCard::MagicCard(const string init_name, const string init_effect, unsigned 
 
 }
 
-//MagicCard::MagicCard(const MagicCard& rhs)
-//{
-//	this->name = rhs.name;
-//	this->effect = rhs.effect;
-//	this->rarity = rhs.rarity;
-//	this->type = rhs.type;	
-//}
+Card* MagicCard::clone() const
+{
+	return new MagicCard(*this);
+}
 
 MagicCard& MagicCard::operator=(const MagicCard& rhs)
 {

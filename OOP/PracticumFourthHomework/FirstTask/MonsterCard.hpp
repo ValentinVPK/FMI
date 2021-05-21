@@ -22,7 +22,7 @@ public:
 		unsigned int init_rarity = 0, const unsigned int init_attack = 0,
 		const unsigned int init_deffence = 0);
 
-	//MonsterCard(const MonsterCard& rhs);
+	Card* clone() const override;
 	MonsterCard& operator=(const MonsterCard& rhs);
 
 	ostream& print(ostream& output) const override;

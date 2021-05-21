@@ -26,7 +26,7 @@ protected:
 public:
 	MagicCard(const string init_name = "", const string init_effect = "", unsigned int init_rarity = 0, const CardType init_type = CardType::SPELL);
 
-	//MagicCard(const MagicCard& rhs);
+	Card* clone() const override;
 	MagicCard& operator=(const MagicCard& rhs);
 
 

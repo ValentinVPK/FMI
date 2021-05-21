@@ -18,14 +18,10 @@ MonsterCard::MonsterCard(const string init_name,const string init_effect, unsign
 {
 }
 
-//MonsterCard::MonsterCard(const MonsterCard& rhs)
-//{
-//	this->name = rhs.name;
-//	this->effect = rhs.effect;
-//	this->rarity = rhs.rarity;
-//	this->attack_points = rhs.attack_points;
-//	this->deffence_points = rhs.deffence_points;
-//}
+Card* MonsterCard::clone() const
+{
+	return new MonsterCard(*this);
+}
 
 MonsterCard& MonsterCard::operator=(const MonsterCard& rhs)
 {

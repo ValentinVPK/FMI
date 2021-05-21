@@ -19,8 +19,9 @@ private:
 public:
 	PendulumCard(const string init_name = "", const string init_effect = "", unsigned int init_rarity = 0, const unsigned int init_attack = 0, const unsigned int init_deffence = 0, const double init_scale = 0, const CardType init_type = CardType::SPELL);
 
-	//PendulumCard(const PendulumCard& rhs);
 	PendulumCard& operator=(const PendulumCard& rhs);
+
+	Card* clone() const override;
 
 	ostream& print(ostream& output) const override;
 	istream& load(istream& input) override;

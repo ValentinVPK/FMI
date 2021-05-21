@@ -29,6 +29,7 @@ public:
 
 	virtual ostream& print(ostream& output) const = 0;
 	virtual istream& load(istream& input) = 0;
+	virtual Card* clone() const = 0;
 
 	virtual ~Card();
 

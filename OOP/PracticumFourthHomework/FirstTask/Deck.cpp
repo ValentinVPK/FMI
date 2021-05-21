@@ -21,7 +21,10 @@ Deck::Deck(const string init_name)
 Deck::Deck(const Deck& rhs)
 {
 	this->name = rhs.name;
-	this->cards = rhs.cards;
+	for (auto card : rhs.cards) 
+	{
+		this->cards.push_back(card->clone());
+	}
 }
 
 Deck& Deck::operator=(const Deck& rhs)
@@ -29,12 +32,12 @@ Deck& Deck::operator=(const Deck& rhs)
 	if (this != &rhs) 
 	{
 		this->name = rhs.name;
-		for (auto card : cards)
-		{
-			delete card;
-		}
+		this->clear_deck();
 
-		this->cards = rhs.cards;
+		for (auto card : rhs.cards) 
+		{
+			this->cards.push_back(card->clone());
+		}
 	}
 
 	return *this;
@@ -96,23 +99,17 @@ void Deck::add_card(Card* new_card)
 {
 	if (typeid(*new_card) == typeid(MonsterCard)) 
 	{
-		MonsterCard* new_monster = dynamic_cast<MonsterCard*>(new_card);
-		Card* monster_to_add = new MonsterCard(*new_monster);
-		this->cards.push_back(monster_to_add);
+		this->cards.push_back(new_card->clone());
 	}
 
 	if (typeid(*new_card) == typeid(MagicCard))
 	{
-		MagicCard* new_magic = dynamic_cast<MagicCard*>(new_card);
-		Card* magic_to_add = new MagicCard(*new_magic);
-		this->cards.push_back(magic_to_add);
+		this->cards.push_back(new_card->clone());
 	}
 	
 	if (typeid(*new_card) == typeid(PendulumCard))
 	{
-		PendulumCard* new_pendulum = dynamic_cast<PendulumCard*>(new_card);
-		Card* pendulum_to_add = new PendulumCard(*new_pendulum);
-		this->cards.push_back(pendulum_to_add);
+		this->cards.push_back(new_card->clone());
 	}
 }
 

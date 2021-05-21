@@ -21,12 +21,6 @@ PendulumCard::PendulumCard(const string init_name, const string init_effect, uns
 	
 }
 
-//PendulumCard::PendulumCard(const PendulumCard& rhs)
-//{
-//	MonsterCard::MonsterCard(rhs);
-//	MagicCard::MagicCard(rhs);
-//}
-
 PendulumCard& PendulumCard::operator=(const PendulumCard& rhs)
 {
 	if (this != &rhs) 
@@ -38,6 +32,11 @@ PendulumCard& PendulumCard::operator=(const PendulumCard& rhs)
 	}
 
 	return *this;
+}
+
+Card* PendulumCard::clone() const
+{
+	return new PendulumCard(*this);
 }
 
 ostream& PendulumCard::print(ostream& output) const

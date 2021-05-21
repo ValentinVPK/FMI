@@ -1,4 +1,5 @@
-﻿/**
+﻿
+/**
 * Solution to homework assignment 4
 * Object Oriented Programming Course
 * Faculty of Mathematics and Informatics of Sofia University
