@@ -5,10 +5,6 @@ Averager::Averager(std::string id)
 {
 }
 
-void Averager::signal(Message message)
-{
-	this->messages.push_back(message);
-}
 
 int Averager::read() const
 {

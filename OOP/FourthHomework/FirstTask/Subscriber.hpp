@@ -13,7 +13,7 @@ public:
 	Subscriber();
 	Subscriber(string id);
 
-	virtual void signal(Message message) = 0; // ?Message&
+	void signal(Message message); 
 
 	virtual int read() const = 0;
 

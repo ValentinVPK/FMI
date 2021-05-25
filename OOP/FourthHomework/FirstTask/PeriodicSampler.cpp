@@ -5,10 +5,6 @@ PeriodicSampler::PeriodicSampler(std::string id, size_t period)
 {
 }
 
-void PeriodicSampler::signal(Message message)
-{
-	this->messages.push_back(message);
-}
 
 int PeriodicSampler::read() const
 {
@@ -16,8 +12,6 @@ int PeriodicSampler::read() const
 	{
 		return 0;
 	}
-
-	//Could be changed
 
 	for (int i = this->messages.size() - 1; i >= 1; i--)
 	{

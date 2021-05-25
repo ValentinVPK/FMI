@@ -10,6 +10,11 @@ Subscriber::Subscriber(string id)
 {
 }
 
+void Subscriber::signal(Message message)
+{
+	this->messages.push_back(message);
+}
+
 Subscriber::~Subscriber()
 {
 

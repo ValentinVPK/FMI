@@ -5,10 +5,6 @@ MovingAverager::MovingAverager(std::string id, size_t windowSize)
 {
 }
 
-void MovingAverager::signal(Message message)
-{
-	this->messages.push_back(message);
-}
 
 int MovingAverager::read() const
 {
