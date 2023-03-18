@@ -106,8 +106,17 @@ find /etc -maxdepth 1 -type f -perm /0004 -exec cp {} ~/myetc \;
 
 21. от предната задача: когато вече сте получили myetc с файлове, архивирайте
 всички от тях, които започват с 'c' в архив, който се казва c_start.tar
-
 изтрийте директорията myetc и цялото и съдържание
-
 изтрийте архива c_start.tar
  
+tar -cf c_start.tar myetc/c*
+rm -r ~/myetc
+rm c_start.tar
+
+22. Използвайки едно извикване на командата find, отпечатайте броя на редовете във всеки обикновен файл в /etc директорията.
+
+find /etc -maxdepth 1 -type f | xargs -I {} wc -l {}
+
+23. Копирайте най-малкия файл от тези, намиращи се в /etc, в home директорията си.
+
+cp $(find /etc -maxdepth 1 -type f | xargs ls -Sr | head -n 1) ~
