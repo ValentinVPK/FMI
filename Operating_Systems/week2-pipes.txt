@@ -1,0 +1,57 @@
+1. Сортирайте /etc/passwd лексикографски по поле UserID.
+
+sort -t: -k 3 /etc/passwd
+
+<=>
+
+cat /etc/passwd | sort -t: -k 3
+
+2. Сортирайте /etc/passwd числово по поле UserID.
+(Открийте разликите с лексикографската сортировка)
+
+sort -n -t: -k 3 /etc/passwd
+
+<=>
+
+cat /etc/passwd | sort -n -t: -k 3
+
+3. Изведете само 1-ва и 5-та колона на файла /etc/passwd спрямо разделител ":".
+
+cat /etc/passwd | cut -d : -f 1,5
+
+4. Изведете съдържанието на файла /etc/passwd от 2-ри до 6-ти символ.
+
+head -n 1 /etc/passwd | cut -c 2-7
+
+5. Отпечатайте потребителските имена и техните home директории от /etc/passwd.
+
+cat /etc/passwd | cut -d : -f 1,6
+
+6. Отпечатайте втората колона на /etc/passwd, разделена спрямо символ '/'.
+
+cat /etc/passwd | cut -d '/' -f 2
+
+7. Изведете броя на байтовете в /etc/passwd.
+Изведете броя на символите в /etc/passwd.
+Изведете броя на редовете  в /etc/passwd.
+
+- cat /etc/passwd | wc -m
+- cat /etc/passwd | wc -c
+- cat /etc/passwd | wc -l
+
+8. С отделни команди, извадете от файл /etc/passwd:
+- първите 12 реда
+- първите 26 символа
+- всички редове, освен последните 4
+- последните 17 реда
+- 151-я ред (или друг произволен, ако нямате достатъчно редове)
+- последните 4 символа от 13-ти ред (символът за нов ред не е част от реда)
+
+- cat /etc/passwd | head -n 12
+- cat /etc/passwd | cut -c 1-26 | head -n 1
+- cat /etc/passwd | head -n -4
+- cat /etc/passwd | tail -n 17
+- cat /etc/passwd | head -n 151 | tail -n 1
+- cat /etc/passwd | head -n 13 | tail -n 1 | rev | cut -c 1-4 | rev
+
+
