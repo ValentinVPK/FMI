@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>My Example Page</title>
+    <link rel="stylesheet" href="./css/referat.css">
+</head>
+<body>
+	<nav>
+		<a href="#json-intro">1. JSON - Въведение</a>
+		<a href="#json-structure">2. Синтаксис и Структура на JSON</a>
+		<a href="#complex-types">3. Комплексни типове в JSON</a>
+        <a href="#json-vs-xml">4. JSON срещу XML</a>
+        <a href="#reading-json">5. Разчитане на JSON от JavaScript</a>
+        <a href="#json-stringify">6. Превръщане на JavaScript стойност в JSON</a>
+        <a href="#jsonp">7. Какво е JSONP?</a>
+        <a href="#jsonp-how-it-works">8. Как работи JSONP?</a>
+        <a href="#jsonp-implementation">9. Имплементация на JSONP</a>
+	</nav>
+	
+	<div class="main-content">
+		<h1>JSONP и JSON</h1>
+		
+		<h2 id="json-intro">JSON - Въведение [1]</h2>
+		<p>
+            JSON (съкратено от JavaScript Object Notation) е формат за споделяне на данни. Както името подсказва, JSON произлиза от програмния език JavaScript, но може да се използва от почти всички други езици. 
+            <br>
+            <br>
+            JSON e също така олекотен, лесно четим, не изисква много форматиране и предоставя добра алтернатива на XML.
+        </p>
+
+		<h2 id="json-structure">Синтаксис и Структура на JSON [1]</h2>
+		<p>
+            JSON използва .json разширението, когато е дефиниран в отделен файл. Среща се също така и под формата на символен низ (JSON string) или на обект, който се достъпва чрез променлива.
+            <br>
+            <br>
+            JSON обектът използва формата ключ-стойност, като обикновено е обвит в къдрави скоби.
+        </p>
+		<img src="./img/figure-1.png" alt="Figure 1">
+        <p class="img-label"><span class="span-bold">фиг. 1</span>: пример за JSON обект</p>
+        <p>
+            Въпреки, че горния пример е прост, JSON обектът може да е доста комплексен и дълъг от гледна точка на редове код. Както се вижда на фигурата, дефиницията на обекта започва и завършва с къдрави скоби { }, като между тях стоят двойките ключове-стойности.
+            <br>
+            <br>
+            Ключ-стойност двойките имат двоеточие между тях по следния начин: “key”: “value”.  Всяка ключ-стойност двойка е разделена със запетая.
+            <br>
+            <br>
+            JSON ключовете стоят от ляво на двоеточието. Те трябва задължително да бъдат обгърнати с двойни кавички, като “key“ може да бъде всеки един валиден символен низ. Във всеки обект, ключовете трябва да са уникални. Символните низове на ключовете могат да съдържат празни интервали както в горния пример (“first name”), но това може да ги направи трудни за достъпване, когато ги достъпваме в кода ни, затова е най-добре да се използват долни черти: “first_name”.
+            <br>
+            <br>
+            JSON стойностите стоят от дясно на двоеточието. Те трябва да са един от следните шест типове данни:
+        </p>
+        <ul>
+            <li>символни низове (strings)</li>
+            <li>числа (numbers)</li>
+            <li>обекти (objects)</li>
+            <li>масиви (arrays)</li>
+            <li>булеви (booleans – true или false)</li>
+            <li>null</li>
+        </ul>
+        <p>
+            Като подаваме тези стойности на ключовете, те запазват синтаксиса на своите типове: символните низове ще са с двойни кавички, но числата няма да бъдат.
+            <br>
+            <br>
+            JSON файловете обикновено са форматирани на няколко реда с нужните отстояния, но JSON може да бъде написан и на един ред, без форматиране:
+        </p>
+        <img src="./img/figure-2.png" alt="Figure 2">
+        <p class="img-label"><span class="span-bold">фиг. 2</span>: пример за JSON обект без форматиране</p>
+        <p>
+            Важно е да уточни, че JSON обекта не е същия формат като JavaScript обект. Въпреки, че можем да използваме функции в JavaScript обектите, не можем да ги ползваме като стойности в JSON. Най-важният атрибут на JSON е това, че може лесно да се трансферира между няколко програмни езика. От друга страна JavaScript обектите могат да се обработват само от JavaScript.
+        </p>
+		
+		<h2 id="complex-types">Комплексни типове в JSON [1]</h2>
+		<p>JSON може да съдържа както вложени обекти, така и вложени масиви. Тези вложени обекти и масиви са подадени като стойности на ключове и самите те са изградени от ключ-стойност двойки</p>
+        <h3>
+            Вложени обекти
+        </h3>
+		<img src="./img/figure-3.png" alt="Figure 3">
+        <p class="img-label"><span class="span-bold">фиг. 3</span>: пример за вложени обекти в JSON</p>
+        <p>На горната фигура виждаме, че за всеки от четирите потребителя (“sammy”, “jesse”, “drew”, “jamie”) имаме вложен JSON обект, който е подаден като стойност за всеки ключ. Във вложения обект имаме други прости стойности (“username”, “location”, “online”, “followers”). Както при всяка друга стойност, когато ползваме обекти като стойности, използваме запетаи, за да разделим елементите.</p>
+        <h3>
+            Вложени масиви
+        </h3>
+        <p>
+            Данните могат да се влагат в JSON като използваме масиви, които са подадени като стойност. В JavaScript използваме квадратни скоби [ ], за да декларираме масив. Масивите са подредени колекции и могат да съдържат стойности от всякакви типове данни. Както е в долния пример, можем да използваме масив, когато имаме много данни, които могат да се групират заедно. 
+        </p>
+        <img src="./img/figure-4.png" alt="Figure 4">
+        <p class="img-label"><span class="span-bold">фиг. 4</span>: пример за вложени масиви в JSON</p>
+        <p>В конкретния пример имаме различни сайтове и социални медии свързани с конкретен потребител. “websites” и “social_media” ключовете съдържат масив с информация за тези сайтове и социални медии</p>
+
+        <h2 id="json-vs-xml">
+            JSON срещу XML [1]
+        </h2>
+        <p>
+            XML или eXtensible Markup Language е начин да се съхраняват данни, които могат да бъдат прочетени както и от хора, така и от машини. XML форматът е също така наличен за употреба от много програмни езици.
+
+            <br>
+            <br>
+
+            Може да се каже, че XML е подобен на JSON, но изисква много повече текст, което го прави по трудоемък за писане и за четене. Друг минус на XML е, че трябва да се parse-ва с XML parser, а JSON от друга страна, може да бъде parse-нат чрез стандартна функция. Друго значително предимство на JSON, е че позволява да използваме масиви, докато при XML не можем.
+        </p>
+        <img src="./img/figure-5.png" alt="Figure 5">
+        <p class="img-label"><span class="span-bold">фиг. 5</span>: пример за XML формат</p>
+        <p>Сега нека сравним горния XML файл с JSON файл:</p>
+        <img src="./img/figure-6.png" alt="Figure 6">
+        <p class="img-label"><span class="span-bold">фиг. 6</span>: пример за JSON формат</p>
+        <p>
+            Както можем да забележим, JSON е доста по-компактен и не изисква затварящи тагове, докато XML ги изисква. XML също така не използва и масиви в горния пример, докато JSON го прави.
+            <br>
+            Лесно може да се забележи, че XML прилича на HTML, при употребата им на тагове. Въпреки, че JSON е по-олекотен от XML и бърз за използване в много ситуации, включително AJAX апликации, ще е хубаво първо да разберем напълно типа на проекта, по който работим, преди да изберем кой формат да използваме.
+        </p>
+
+        <h2 id="reading-json">
+            Разчитане на JSON от JavaScript [2]
+        </h2>
+        <p>
+            Всеки програмен език има отделен начин за разчитане и усвояване на JSON, но сега ще разгледаме как това се случва в JavaScript.
+            <br>
+            <br>
+            Статичния метод JSON.parse() разчита JSON символен низ, конструирайки JavaScript обект. 
+        </p>
+        <img src="./img/demo-1.png" alt="Demo 1">
+        <p class="img-label"><span class="span-bold">JavaScript демо 1</span>: JSON.parse()</p>
+        <h3>
+            Синтаксис:
+        </h3>
+        <pre>
+        <code>
+            JSON.parse(text)
+            JSON.parse(text, reviver)            
+        </code>
+        </pre>
+        <h3>
+            Параметри:
+        </h3>
+        <p>
+            <span class="span-bold">text</span> – JSON символен низ, който ще разчитаме.
+            <br>
+            <span class="span-bold">reviver (не е задължителен)</span> – функция, която при четенето на всяка стойност, също така я трансформира преди да я върне. Функцията се извиква със следните аргументи: key, value
+        </p>
+        <h3>
+            Какво връща JSON.parse() ?
+        </h3>
+        <p>
+            Връща обект, масив, символен низ, число, булева стойност или null базиран на JSON текста
+        </p>
+        <h3>
+            Exceptions:
+        </h3>
+        <p>
+            функцията връща SyntaxError, ако символният низ, който прочитаме не е валиден JSON
+        </p>
+        <h3>
+            Употреба на JSON.parse() – още примери:
+        </h3>
+        <img src="./img/demo-2.png" alt="Demo 2">
+        <p class="img-label"><span class="span-bold">JavaScript демо 2</span>: JSON.parse() - примери</p>
+        <h3>
+            Употреба на JSON.parse(), използвайки reviver параметъра:
+        </h3>
+        <img src="./img/demo-3.png" alt="Demo 3">
+        <p class="img-label"><span class="span-bold">JavaScript демо 3</span>: JSON.parse() с reviver параметър</p>
+        <h3>
+            Важни забележки:
+        </h3>
+        <p><span class="span-bold">JSON.parse() не позволява изпозлването на запетаи след последния елемент:</span></p>
+        <img src="./img/demo-4.png" alt="Demo 4">
+        <p class="img-label"><span class="span-bold">JavaScript демо 4</span>: JSON.parse() floating comma</p>
+        <p><span class="span-bold">JSON.parse() не позволява използването на единични кавички:</span></p>
+        <img src="./img/demo-5.png" alt="Demo 5">
+        <p class="img-label"><span class="span-bold">JavaScript демо 5</span>: JSON.parse() единични кавички</p>
+
+        <h2 id="json-stringify">
+            Превръщане на JavaScript стойност в JSON [3]
+        </h2>
+        <p>
+            Статичният метод JSON.stringify() превръща JavaScript стойност в JSON символен низ, като има и опция да заменя стойности, ако заместваща функция е подадена, както и опция за включване на само определени свойства (properties) на обекта, ако заместващ масив е подаден.
+        </p>
+        <img src="./img/demo-6.png" alt="Demo 6">
+        <p class="img-label"><span class="span-bold">JavaScript демо 6</span>: JSON.stringify()</p>
+        <h3>
+            Синтаксис:
+        </h3>
+        <pre>
+        <code>
+            JSON.stringify(value)
+            JSON.stringify(value, replacer)
+            JSON.stringify(value, replacer, space)
+        </code>
+        </pre>
+        <h3>
+            Параметри:
+        </h3>
+        <p>
+            <span class="span-bold">value</span> – стойността, която ще конвертираме в JSON символен низ
+            <br>
+            <span class="span-bold">replacer (опционален)</span> – функция, която променя режима на работа на процеса на конвертиране, или масив от символни низове или числа, който конкретизира кои от свойствата на value обекта да бъдат добавени към изхода
+            <span class="span-bold">space (опционален)</span> – символен низ или число, което се използва за вмъкване на празни интервали към JSON символния низ, за да бъде по-лесно четим. Ако този параметър е число, това показва колко празни символи ще бъдат използвани като идентация като максимумът е 10 (всяко число, което е по-голямо от 10 ще се смята като 10). Стойности по-малко от 1 показват, че никакво празно разстояние не трябва да се използва. Ако параметърът е символен низ, същият този низ( или първите 10 символа на символния низ, ако е по-дълъг от това) се поставят преди всеки вложен обект или масив
+        </p>
+        <h3>
+            Какво връща JSON.stringify() 
+        </h3>
+        <p>
+            връща JSON символен низ, който репрезентира подадената стойност, или undefined
+        </p>
+        <h3>
+            Exceptions 
+        </h3>
+        <p>
+            функцията хвърля TypeError, ако подадения от нас value обект е цикличен или ако съдържа BigInt стойност
+        </p>
+        <h3>
+            Употреба на JSON.stringify(), използвайки функция като replacer:
+        </h3>
+        <img src="./img/demo-7.png" alt="Demo 7">
+        <p class="img-label"><span class="span-bold">JavaScript демо 7</span>: JSON.stringify() с replacer функция</p>
+        <h3>
+            Употреба на JSON.stringify(), използвайки масив като replacer:
+        </h3>
+        <img src="./img/demo-8.png" alt="Demo 8">
+        <p class="img-label"><span class="span-bold">JavaScript демо 8</span>: JSON.stringify() с replacer масив</p>
+
+        <h3>
+            Употреба на JSON.stringify(), използвайки space параметър:
+        </h3>
+        <img src="./img/demo-9.png" alt="Demo 9">
+        <p class="img-label"><span class="span-bold">JavaScript демо 9</span>: JSON.stringify() със space параметър</p>
+
+        <h3>
+            Пример за грешка при цикличен обект:
+        </h3>
+        <img src="./img/demo-10.png" alt="Demo 10">
+        <p class="img-label"><span class="span-bold">JavaScript демо 10</span>: JSON.stringify() цикличен обект</p>
+
+        <h2 id="jsonp">
+            Какво е JSONP? [4] [5] [6]
+        </h2>
+
+        <p>
+            JSONP  или JSON with Padding е стара техника, която позволява на разработчиците да заобиколят same-origin политиката, която се налага от браузърите, като използваме начина на работа на &lt;script&gt; елемента. Въпросната политика не позволява да четем каквито и да са responses изпратени ни от уебсайтове, чиито origins са различни от на този, който се използва на момента. Политиката обаче позволява да се изпрати request, но не и да се чете.
+
+            <br>
+            <br>
+
+            Origin-ът на един уебсайт е съставен от три части. Първо имаме URI схемата (т.е. https: //), после имаме името на хоста ( т.е. example.com),  и накрая порта (напр. 443). Имена на уебсайтове като http://example.com и https://example.com имат различни origins, заради различията в URI схемата.
+        </p>
+
+        <h2 id="jsonp-how-it-works">
+            Как работи JSONP? [4] [5] [6]
+        </h2>
+        <p>
+            Нека предположим, че в момента сме на localhost:8000 и искаме да изпратим заявка към сървър чрез JSON API:
+            <br>
+            <br>
+            https://www.server.com/api/person/1
+            <br>
+            <br>
+            Отговорът от сървъра може да изглежда така:
+        </p>
+        <img src="./img/figure-7.png" alt="Figure 7">
+        <p class="img-label"><span class="span-bold">фиг. 7</span>: JSON сървър response</p>
+        <p>
+            Но заради политиката, спомената по-рано, заявката ще бъде блокирана, защото origins на уебсайта и на сървъра се различават.
+            <br>
+            <br>
+            Вместо ние да пращаме заявката, можем да използваме &lt;script&gt; елемент, на който политиката не се прилага – може да зарежда и изпълнява JavaScript от източник с различен origin. По този начин, уебсайт, който се намира на https://example.com може да зареди Google Maps библиотека например (т.е. CDN)
+            <br>
+            <br>
+            Като предоставим линка на API-то на src атрибута на &lt;script&gt; тага, той ще приеме отговора и ще го изпълни вътре в контекста на браузъра:
+            <br>
+            <br>
+            &lt;script src="https://www.server.com/api/person/1" async="true"&gt;&lt;/script&gt;
+            <br>
+            <br>
+            Проблемът тук е, че &lt;script&gt; елементът автоматично обработва и изпълнява върнатия код, който в нашия случай е JSON символния низ показан горе. JSON низът ще се приеме като JavaScript код, и така ще хвърли грешка, защото не е валиден JavaScript
+        </p>
+        <img src="./img/figure-8.png" alt="Figure 8">
+        <p class="img-label"><span class="span-bold">фиг. 8</span>: JSONP Syntax Error</p>
+        <p>
+            JSON кодът щеше да работи добре, ако го бяхме закачили на променлива или ако го бяхме подали като аргумент на функция. Така вместо да връща чист JSON отговор, сървърът може да върне JavaScript код. Във върнатия код, JSON обекта е подаден като аргумент на функция. Името на функцията трябва да бъде подадено от клиента, защото кодът ще се изпълнява в браузъра. Името на функцията е предоставено в параметъра на заявката наречен callback.
+            <br>
+            <br>
+            https://www.server.com/api/person/1?callback=callbackName
+        </p>
+        <img src="./img/demo-10.png" alt="Demo 11">
+        <p class="img-label"><span class="span-bold">JavaScript демо 11</span>: JSONP правилно извикване</p>
+        <p>За да работи JSONP, трябва и клиентът и сървърът да го поддържат.</p>
+
+        <h2 id="jsonp-implementation">
+            Разчитане на JSON от JavaScript [4] [5] [6]
+        </h2>
+        <p>Ще създадем функция наречена jsonp, която ще изпрати заявката:</p>
+        <img src="./img/demo-12.png" alt="Demo 12">
+        <p class="img-label"><span class="span-bold">JavaScript демо 12</span>: JSONP имплементация</p>
+        <p>
+            Както виждаме, имаме глобална променлива наречена jsonpID – използваме я, за да сме сигурни, че всяка заявка ще има уникално име на функцията.
+            <br>
+            <br>
+            Първо, запазваме референция към &lt;head&gt; обекта в променлива, наречена head. След това увеличаваме jsonpID, за да сме сигурни, че името на функцията е уникално. Вътре в callback, който е предоставен от отговора от сървъра създаваме &lt;script&gt; елементът и callbackName, което се състои от символния низ jsonpCallback конкатениран с уникалното ID.
+            <br>
+            <br>
+            След това, слагаме вътре в src атрибута на &lt;script&gt; елемента URL-а на сървъра. Вътре в заявката, задаваме callback параметъра да е равен на callbackName. Също така задаваме async атрибута на true, за да не се блокира скрипта.
+            <br>
+            <br>
+            Имаме три възможни изхода от тази заявка:
+        </p>
+        <ol>
+            <li>Заявката е успешна и window[callbackName] се изпълнява, което разрешава и promise-а с JSON резултата</li>
+            <li>&lt;script&gt; елементът хвърля грешка и отказваме promise-а</li>
+            <li>Изпълнението на заявката продължава повече от очакването и се хвърля timeout грешка</li>
+        </ol>
+        <img src="./img/demo-13.png" alt="Demo 13">
+        <p class="img-label"><span class="span-bold">JavaScript демо 13</span>: JSONP cleanup</p>
+        <p>
+            Callback-ът трябва да се регистрира на window обекта, за да може да бъде наличен вътре в създадения &lt;script&gt; контекст. 
+            <br>
+            <br>
+            В горния код имаме и абстракция на процеса на почистване в cleanUp функция, където трите изхода – прекъсване, успех и слушателя за грешки изглеждат еднакво:
+        </p>
+        <img src="./img/demo-14.png" alt="Demo 14">
+        <p class="img-label"><span class="span-bold">JavaScript демо 14</span>: JSONP cleanup функция</p>
+        <p>
+            Функцията първо премахва регистрирания callback, който се извиква при успешен отговор. После Премахва &lt;script&gt; елемента от &lt;head&gt; и изчиства timeout-а. Също, за всеки случай, задава script референцията към null.
+        </p>
+        <img src="./img/demo-15.png" alt="Demo 15">
+        <p class="img-label"><span class="span-bold">JavaScript демо 15</span>: JSONP употреба</p>
+
+        <h2 id="conclusion">
+            Заключение
+        </h2>
+        <p>
+            Като цяло, JSONP е метод за заобикаляне на стриктни политики, който е останал в миналото и вече не се използва, а и не се препоръчва също. При този метод има много притеснения относно сигурността (например сървърът може да отговори с какъвто JavaScript код си иска, който може да е много различен от това, което очакваме, и ще има достъп до всичко в контекста на прозореца). Вместо JSONP, в днешно време се ползва CORS механизма, който ни позволява да правим безопасни cross-origin заявки.
+        </p>
+        <p>
+            [1] DigitalOcean “An Introduction to JSON” <a href="https://www.digitalocean.com/community/tutorials/an-introduction-to-json ">https://www.digitalocean.com/community/tutorials/an-introduction-to-json </a> публикувано: 08.12.2016, редактирано на 24.08.2022
+            <br>
+            <br>
+            [2] MDN web docs “JSON.parse()” <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse</a> последно редактирано на: 12.04.2023
+            <br>
+            <br>
+            [3] MDN web docs “JSON.stringify()”  <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify</a> последно редактирано на : 6.04.2023
+            <br>
+            <br>
+            [4] LogRocket “JSONP demystified” <a href="https://blog.logrocket.com/jsonp-demystified-what-it-is-and-why-it-exists/">https://blog.logrocket.com/jsonp-demystified-what-it-is-and-why-it-exists/</a> публикувано на 21.11.2019
+            <br>
+            <br>
+            [5] Atatus “JSONP” <a href="https://www.atatus.com/glossary/jsonp/">https://www.atatus.com/glossary/jsonp/</a> публикувано на 19.09.2022
+            <br>
+            <br>
+            [6] Online Interview Questions <a href="https://www.onlineinterviewquestions.com/what-is-the-difference-between-json-and/">https://www.onlineinterviewquestions.com/what-is-the-difference-between-json-and/</a> публикувано на 18.10.2019
+        </p>
+	</div>
+</body>
+</html>
