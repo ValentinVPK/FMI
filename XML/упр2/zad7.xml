@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<library xmlns:book="book.com"
+         xmlns:record="record.com">
+    <book:book>
+        <book:title>A true story</book:title>
+        <book:description>A real cool publication</book:description>
+    </book:book>
+    <record:record>
+        <record:name>Miller</record:name>
+        <record:title>Dr. </record:title>
+        <record:publications> ... </record:publications>
+    </record:record>
+</library>

@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<operators>
+  <operator>
+    <Condition>Equal to</Condition>
+    <Operator>=</Operator>
+    <FormulaExample>A1 = B1</FormulaExample>
+    <Description>Some Description</Description>
+    <![CDATA[
+        Operator = :
+        
+        A1 = B1 => returns true if all values in A1 are eual to all values in B2, otherwise returns false
+    ]]>
+  </operator>
+  <operator>
+    <Condition>Not equal to</Condition>
+    <Operator>=</Operator>
+    <FormulaExample>A1 = B1</FormulaExample>
+    <Description>Some Description</Description>
+    <![CDATA[
+        Operator <> :
+
+        A1 <> B1 => returns true if all values in A1 are not equal to the values in B2, otherwise returns false
+    ]]>
+  </operator>
+  <operator>
+    <Condition>Greater than</Condition>
+    <Operator>&gt</Operator>
+    <FormulaExample>A1 = B1</FormulaExample>
+    <Description>Some Description</Description>
+    <![CDATA[
+        Operator > :
+
+        A1 > B1 => returns true if A1 is greater than B1, otherwise returns false
+    ]]>
+  </operator>
+  <operator>
+    <Condition>Eqaul to</Condition>
+    <Operator>=</Operator>
+    <FormulaExample>A1 = B1</FormulaExample>
+    <Description>Some Description</Description>
+    <![CDATA[
+        Operator < :
+
+        A1 < B1 => returns true if A1 is less than B1, otherwise returns false
+    ]]>
+  </operator>
+  <operator>
+    <Condition>Eqaul to</Condition>
+    <Operator>=</Operator>
+    <FormulaExample>A1 = B1</FormulaExample>
+    <Description>Some Description</Description>
+    <![CDATA[
+        Operator >= :
+
+        A1 >= B1 => returns true if A1 is greater than or equal to B1, otherwise returns false
+    ]]>
+  </operator>
+  <operator>
+    <Condition>Eqaul to</Condition>
+    <Operator>=</Operator>
+    <FormulaExample>A1 = B1</FormulaExample>
+    <Description>Some Description</Description>
+    <![CDATA[
+        Operator >= :
+
+        A1 <= B1 => returns true if A1 is less than or equal to B1, otherwise returns false
+    ]]>
+  </operator>
+</operators>

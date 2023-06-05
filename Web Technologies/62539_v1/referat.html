@@ -3,6 +3,8 @@
 <head>
 	<title>My Example Page</title>
     <link rel="stylesheet" href="./css/referat.css">
+    <link href="./css/prism.css" rel="stylesheet" />
+    <script src="./javascript/prism.js"></script>
 </head>
 <body>
 	<nav>
@@ -118,16 +120,28 @@
             <br>
             Статичния метод JSON.parse() разчита JSON символен низ, конструирайки JavaScript обект. 
         </p>
-        <img src="./img/demo-1.png" alt="Demo 1">
+        <pre>
+            <code class="language-javascript line-numbers">
+                const json = '{"result":true, "count":42}';
+
+                const obj = JSON.parse(json);
+                
+                console.log(obj.count);
+                // Очакван резултат: 42
+                
+                console.log(obj.result);
+                // Очакван резултат: true
+            </code>
+        </pre>  
         <p class="img-label"><span class="span-bold">JavaScript демо 1</span>: JSON.parse()</p>
         <h3>
             Синтаксис:
         </h3>
         <pre>
-        <code>
-            JSON.parse(text)
-            JSON.parse(text, reviver)            
-        </code>
+            <code class="language-javascript line-numbers">
+                JSON.parse(text)
+                JSON.parse(text, reviver)            
+            </code>
         </pre>
         <h3>
             Параметри:
@@ -152,21 +166,64 @@
         <h3>
             Употреба на JSON.parse() – още примери:
         </h3>
-        <img src="./img/demo-2.png" alt="Demo 2">
+        <pre>
+            <code class="language-javascript line-numbers">
+                JSON.parse("{}"); // {}
+                JSON.parse("true"); // true
+                JSON.parse('"foo"'); // "foo"
+                JSON.parse('[1, 5, "false"]'); // [1, 5, "false"]
+                JSON.parse("null"); // null          
+            </code>
+        </pre>
         <p class="img-label"><span class="span-bold">JavaScript демо 2</span>: JSON.parse() - примери</p>
         <h3>
             Употреба на JSON.parse(), използвайки reviver параметъра:
         </h3>
-        <img src="./img/demo-3.png" alt="Demo 3">
+        <pre>
+            <code class="language-javascript line-numbers">
+                JSON.parse(
+                    '{"p": 5}',
+                    (key, value) =>
+                      typeof value === "number"
+                        ? value * 2 // връща value * 2 за числата
+                        : value, // връща всичко останало без да го променя
+                );
+
+                // { p: 10 }
+
+                JSON.parse('{"1": 1, "2": 2, "3": {"4": 4, "5": {"6": 6}}}', (key, value) => {
+                  console.log(key);
+                  return value;
+                });
+                // 1
+                // 2
+                // 4
+                // 6
+                // 5
+                // 3
+                // ""       
+            </code>
+        </pre>
         <p class="img-label"><span class="span-bold">JavaScript демо 3</span>: JSON.parse() с reviver параметър</p>
         <h3>
             Важни забележки:
         </h3>
         <p><span class="span-bold">JSON.parse() не позволява изпозлването на запетаи след последния елемент:</span></p>
-        <img src="./img/demo-4.png" alt="Demo 4">
+        <pre>
+            <code class="language-javascript line-numbers">
+                // и двете ще хвърлят SyntaxError
+                JSON.parse("[1, 2, 3, 4, ]");
+                JSON.parse('{"foo" : 1, }');      
+            </code>
+        </pre>
         <p class="img-label"><span class="span-bold">JavaScript демо 4</span>: JSON.parse() floating comma</p>
         <p><span class="span-bold">JSON.parse() не позволява използването на единични кавички:</span></p>
-        <img src="./img/demo-5.png" alt="Demo 5">
+        <pre>
+            <code class="language-javascript line-numbers">
+                // ще хвърли SyntaxError
+                JSON.parse("{'foo': 1}");   
+            </code>
+        </pre>
         <p class="img-label"><span class="span-bold">JavaScript демо 5</span>: JSON.parse() единични кавички</p>
 
         <h2 id="json-stringify">
@@ -175,17 +232,31 @@
         <p>
             Статичният метод JSON.stringify() превръща JavaScript стойност в JSON символен низ, като има и опция да заменя стойности, ако заместваща функция е подадена, както и опция за включване на само определени свойства (properties) на обекта, ако заместващ масив е подаден.
         </p>
-        <img src="./img/demo-6.png" alt="Demo 6">
+        <pre>
+            <code class="language-javascript line-numbers">
+                console.log(JSON.stringify({ x: 5, y: 6 }));
+                // Очакван резултат: "{"x":5,"y":6}"
+
+                console.log(JSON.stringify([new Number(3), new String('false'), new Boolean(false)]));
+                // Очакван резултат: "[3,"false",false]"
+
+                console.log(JSON.stringify({ x: [10, undefined, function(){}, Symbol('')] }));
+                // Очакван резултат: "{"x":[10,null,null,null]}"
+
+                console.log(JSON.stringify(new Date(2006, 0, 2, 15, 4, 5)));
+                // Очакван резултат: ""2006-01-02T15:04:05.000Z""  
+            </code>
+        </pre>
         <p class="img-label"><span class="span-bold">JavaScript демо 6</span>: JSON.stringify()</p>
         <h3>
             Синтаксис:
         </h3>
         <pre>
-        <code>
-            JSON.stringify(value)
-            JSON.stringify(value, replacer)
-            JSON.stringify(value, replacer, space)
-        </code>
+            <code class="language-javascript line-numbers">
+                JSON.stringify(value)
+                JSON.stringify(value, replacer)
+                JSON.stringify(value, replacer, space)
+            </code>
         </pre>
         <h3>
             Параметри:
@@ -211,24 +282,75 @@
         <h3>
             Употреба на JSON.stringify(), използвайки функция като replacer:
         </h3>
-        <img src="./img/demo-7.png" alt="Demo 7">
+        <pre>
+            <code class="language-javascript line-numbers">
+                function replacer(key, value) {
+                    // Филтриране на свойства
+                    if (typeof value === "string") {
+                      return undefined;
+                    }
+                    return value;
+                }
+                  
+                const foo1 = {
+                  foundation: "Mozilla",
+                  model: "box",
+                  week: 45,
+                  transport: "car",
+                  month: 7,
+                };
+                JSON.stringify(foo, replacer);
+                // '{"week":45,"month":7}'
+            </code>
+        </pre>
         <p class="img-label"><span class="span-bold">JavaScript демо 7</span>: JSON.stringify() с replacer функция</p>
         <h3>
             Употреба на JSON.stringify(), използвайки масив като replacer:
         </h3>
-        <img src="./img/demo-8.png" alt="Demo 8">
+        <pre>
+            <code class="language-javascript line-numbers">
+                const foo2 = {
+                    foundation: "Mozilla",
+                    model: "box",
+                    week: 45,
+                    transport: "car",
+                    month: 7,
+                };
+                  
+                JSON.stringify(foo, ["week", "month"]);
+                // '{"week":45,"month":7}', запазваме само "week" и "month" свойствата
+            </code>
+        </pre>
         <p class="img-label"><span class="span-bold">JavaScript демо 8</span>: JSON.stringify() с replacer масив</p>
 
         <h3>
             Употреба на JSON.stringify(), използвайки space параметър:
         </h3>
-        <img src="./img/demo-9.png" alt="Demo 9">
+        <pre>
+            <code class="language-javascript line-numbers">
+                console.log(JSON.stringify({ uno: 1, dos: 2 }, null, "\t"));
+                /*
+                {
+                    "uno": 1,
+                    "dos": 2
+                }
+                */
+            </code>
+        </pre>
         <p class="img-label"><span class="span-bold">JavaScript демо 9</span>: JSON.stringify() със space параметър</p>
 
         <h3>
             Пример за грешка при цикличен обект:
         </h3>
-        <img src="./img/demo-10.png" alt="Demo 10">
+        <pre>
+            <code class="language-javascript line-numbers">
+                const circularReference = {};
+                circularReference.myself = circularReference;
+
+                // Сериализирането на циклична референция хвърля "TypeError: cyclic object value"
+                JSON.stringify(circularReference);
+            </code>
+        </pre>
         <p class="img-label"><span class="span-bold">JavaScript демо 10</span>: JSON.stringify() цикличен обект</p>
 
         <h2 id="jsonp">
@@ -281,7 +403,14 @@
             <br>
             https://www.server.com/api/person/1?callback=callbackName
         </p>
-        <img src="./img/demo-10.png" alt="Demo 11">
+        <pre>
+            <code class="language-javascript line-numbers">
+                callbackName({
+                    "firstName": "Maciej",
+                    "lastName": "Cieslar"
+                })
+            </code>
+        </pre>
         <p class="img-label"><span class="span-bold">JavaScript демо 11</span>: JSONP правилно извикване</p>
         <p>За да работи JSONP, трябва и клиентът и сървърът да го поддържат.</p>
 
@@ -289,7 +418,52 @@
             Разчитане на JSON от JavaScript [4] [5] [6]
         </h2>
         <p>Ще създадем функция наречена jsonp, която ще изпрати заявката:</p>
-        <img src="./img/demo-12.png" alt="Demo 12">
+        <pre>
+            <code class="language-javascript line-numbers">
+                let jsonpID = 0;
+
+                function jsonp(url, timeout = 7500) {
+                  const head = document.querySelector('head');
+                  jsonpID += 1;
+                
+                  return new Promise((resolve, reject) => {
+                    let script = document.createElement('script');
+                    const callbackName = `jsonpCallback${jsonpID}`;
+                
+                    script.src = encodeURI(`${url}?callback=${callbackName}`);
+                    script.async = true;
+                
+                    const timeoutId = window.setTimeout(() => {
+                      cleanUp();
+                    
+                      return reject(new Error('Timeout'));
+                    }, timeout);
+                
+                    window[callbackName] = data => {
+                      cleanUp();
+                    
+                      return resolve(data);
+                    };
+                
+                    script.addEventListener('error', error => {
+                      cleanUp();
+                    
+                      return reject(error);
+                    });
+                
+                    function cleanUp() {
+                      window[callbackName] = undefined;
+                      head.removeChild(script);
+                      window.clearTimeout(timeoutId);
+                      script = null;
+                    }
+                
+                
+                    head.appendChild(script);
+                  });
+                }
+            </code>
+        </pre>
         <p class="img-label"><span class="span-bold">JavaScript демо 12</span>: JSONP имплементация</p>
         <p>
             Както виждаме, имаме глобална променлива наречена jsonpID – използваме я, за да сме сигурни, че всяка заявка ще има уникално име на функцията.
@@ -308,7 +482,27 @@
             <li>&lt;script&gt; елементът хвърля грешка и отказваме promise-а</li>
             <li>Изпълнението на заявката продължава повече от очакването и се хвърля timeout грешка</li>
         </ol>
-        <img src="./img/demo-13.png" alt="Demo 13">
+        <pre>
+            <code class="language-javascript line-numbers">
+                const timeoutId = window.setTimeout(() => {
+                    cleanUp();
+                  
+                    return reject(new Error('Timeout'));
+                  }, timeout);
+                  
+                  window[callbackName] = data => {
+                    cleanUp();
+                  
+                    return resolve(data);
+                  };
+                  
+                  script.addEventListener('error', error => {
+                    cleanUp();
+                  
+                    return reject(error);
+                  });
+            </code>
+        </pre>
         <p class="img-label"><span class="span-bold">JavaScript демо 13</span>: JSONP cleanup</p>
         <p>
             Callback-ът трябва да се регистрира на window обекта, за да може да бъде наличен вътре в създадения &lt;script&gt; контекст. 
@@ -316,12 +510,30 @@
             <br>
             В горния код имаме и абстракция на процеса на почистване в cleanUp функция, където трите изхода – прекъсване, успех и слушателя за грешки изглеждат еднакво:
         </p>
-        <img src="./img/demo-14.png" alt="Demo 14">
+        <pre>
+            <code class="language-javascript line-numbers">
+                function cleanUp() {
+                    window[callbackName] = undefined;
+                    head.removeChild(script);
+                    window.clearTimeout(timeoutId);
+                    script = null;
+                }
+            </code>
+        </pre>
         <p class="img-label"><span class="span-bold">JavaScript демо 14</span>: JSONP cleanup функция</p>
         <p>
             Функцията първо премахва регистрирания callback, който се извиква при успешен отговор. После Премахва &lt;script&gt; елемента от &lt;head&gt; и изчиства timeout-а. Също, за всеки случай, задава script референцията към null.
         </p>
-        <img src="./img/demo-15.png" alt="Demo 15">
+        <pre>
+            <code class="language-javascript line-numbers">
+                jsonp('https://gist.github.com/maciejcieslar/1c1f79d5778af4c2ee17927de769cea3.json')
+                 .then(console.log)
+                 .catch(console.error);
+                jsonp('https://gist.github.com/maciejcieslar/1c1f79d5778af4c2ee17927de769cea3.json')
+                 .then(console.log)
+                 .catch(console.error);
+            </code>
+        </pre>
         <p class="img-label"><span class="span-bold">JavaScript демо 15</span>: JSONP употреба</p>
 
         <h2 id="conclusion">

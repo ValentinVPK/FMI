@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!DOCTYPE channel [
+    <!ELEMENT channel (item*, title+, link+, image*, language?, description+)>
+    <!ATTLIST channel version CDATA #REQUIRED>
+    <!ELEMENT item (title, link, description?)>
+    <!ELEMENT title (#PCDATA)>
+    <!ELEMENT link (#PCDATA)>
+    <!ELEMENT description (#PCDATA)>
+    <!ELEMENT language (#PCDATA)>
+    <!ELEMENT image (title* | link* | url*)>
+    <!ELEMENT url (#PCDATA)>
+]>
+<channel version="1va-versiq">
+    <item>
+        <title>Hello</title>
+        <link>testtt</link>
+    </item>
+    <title>Hello</title>
+    <link>idk</link>
+    <image>
+        <title>Hello1</title>
+        <title>Hello2</title>
+        <title>Hello3</title>
+    </image>
+    <description>dddddddddddddddddddddddddd</description>
+</channel>

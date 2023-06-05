@@ -25,20 +25,21 @@ JSON.parse(
       typeof value === "number"
         ? value * 2 // връща value * 2 за числата
         : value, // връща всичко останало без да го променя
-  );
-  // { p: 10 }
+);
+
+// { p: 10 }
   
-  JSON.parse('{"1": 1, "2": 2, "3": {"4": 4, "5": {"6": 6}}}', (key, value) => {
-    console.log(key);
-    return value;
-  });
-  // 1
-  // 2
-  // 4
-  // 6
-  // 5
-  // 3
-  // ""
+JSON.parse('{"1": 1, "2": 2, "3": {"4": 4, "5": {"6": 6}}}', (key, value) => {
+  console.log(key);
+  return value;
+});
+// 1
+// 2
+// 4
+// 6
+// 5
+// 3
+// ""
 
   // демо 4
 
@@ -75,17 +76,17 @@ function replacer(key, value) {
       return undefined;
     }
     return value;
-  }
+}
   
-  const foo1 = {
-    foundation: "Mozilla",
-    model: "box",
-    week: 45,
-    transport: "car",
-    month: 7,
-  };
-  JSON.stringify(foo, replacer);
-  // '{"week":45,"month":7}'
+const foo1 = {
+  foundation: "Mozilla",
+  model: "box",
+  week: 45,
+  transport: "car",
+  month: 7,
+};
+JSON.stringify(foo, replacer);
+// '{"week":45,"month":7}'
 
 
 // демо 8
@@ -96,10 +97,10 @@ const foo2 = {
     week: 45,
     transport: "car",
     month: 7,
-  };
+};
   
-  JSON.stringify(foo, ["week", "month"]);
-  // '{"week":45,"month":7}', запазваме само "week" и "month" свойствата
+JSON.stringify(foo, ["week", "month"]);
+// '{"week":45,"month":7}', запазваме само "week" и "month" свойствата
 
 
 // демо 9
@@ -125,7 +126,7 @@ JSON.stringify(circularReference);
 callbackName({
     "firstName": "Maciej",
     "lastName": "Cieslar"
-  })
+})
 
 //демо 12
 let jsonpID = 0;
@@ -179,17 +180,17 @@ const timeoutId = window.setTimeout(() => {
   return reject(new Error('Timeout'));
 }, timeout);
 
-    window[callbackName] = data => {
-      cleanUp();
-    
-      return resolve(data);
-    };
-    
-    script.addEventListener('error', error => {
-      cleanUp();
-    
-      return reject(error);
-    });
+window[callbackName] = data => {
+  cleanUp();
+
+  return resolve(data);
+};
+
+script.addEventListener('error', error => {
+  cleanUp();
+
+  return reject(error);
+});
     
 
 // демо 14
@@ -199,7 +200,7 @@ function cleanUp() {
     head.removeChild(script);
     window.clearTimeout(timeoutId);
     script = null;
-  }
+}
 
 
 // демо 15
