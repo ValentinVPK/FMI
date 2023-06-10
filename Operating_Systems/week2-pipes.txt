@@ -48,10 +48,108 @@ cat /etc/passwd | cut -d '/' -f 2
 - последните 4 символа от 13-ти ред (символът за нов ред не е част от реда)
 
 - cat /etc/passwd | head -n 12
-- cat /etc/passwd | cut -c 1-26 | head -n 1
+- cat /etc/passwd | tr -d "\n" | cut -c -26
 - cat /etc/passwd | head -n -4
 - cat /etc/passwd | tail -n 17
 - cat /etc/passwd | head -n 151 | tail -n 1
 - cat /etc/passwd | head -n 13 | tail -n 1 | rev | cut -c 1-4 | rev
+
+9. Запаметете във файл в своята home директория резултатът от командата `df -P`.
+
+df -P > output.txt
+
+Напишете команда, която извежда на екрана съдържанието на този файл, без първия ред (хедъра), сортирано по второ поле (numeric).
+
+cat output.txt | tail -n +2 | tr -s ' ' | sort -n -t ' ' -k 2
+
+<=>
+
+cat output.txt | tail -n + 2 | sort -nrk2
+
+10. Запазете само потребителските имена от /etc/passwd във файл users във вашата home директория.
+
+ cat /etc/passwd | cut -d : -f 1 > users.txt
+
+11. Изпишете всички usernames от /etc/passwd с главни букви.
+
+cat /etc/passwd | cut -d : -f 1 | tr a-z A-Z
+
+
+12. 
+
+Изведете реда от /etc/passwd, на който има информация за вашия потребител.
+
+cat /etc/passwd | grep -F s62539
+
+Изведедете този ред и двата реда преди него.
+
+cat /etc/passwd | grep -F -B 2  s62539
+
+Изведете този ред, двата преди него, и трите след него.
+
+cat /etc/passwd | grep -F -B 2 -A 3 s62539
+
+Изведете *само* реда, който се намира 2 реда преди реда, съдържащ информация за вашия потребител.
+
+cat /etc/passwd | grep -F -B 2 s62539 | head -n 1
+
+
+13. Изведете колко потребители не изпозват /bin/bash за login shell според /etc/passwd
+
+cat /etc/passwd | grep -n -F -v /bin/bash | sort -rn -t ':' -k 1 | head -n 1 | cut -d : -f 1
+
+14. Изведете само имената на хората с второ име по-дълго от 6 (>6) символа според /etc/passwd
+
+cat /etc/passwd | tr -d ',' | cut -d ':' -f 5 | awk 'length($2) > 6 {print $0}'
+
+15. Изведете имената на хората с второ име по-късо от 8 (<=7) символа според /etc/passwd // !(>7) = ?
+
+cat /etc/passwd | tr -d ',' | cut -d ':' -f 5 | awk 'length($2) < 8 {print $0}'
+
+16. Изведете целите редове от /etc/passwd за хората от 03-a-5003
+
+cat /etc/passwd | tr -d ',' |  awk -F ':' '$5~/^[^:]+ [^:]{1,7}$/ {print $0}'
+
+
+17. Копирайте <РЕПО>/exercises/data/emp.data във вашата home директория.
+Посредством awk, използвайки копирания файл за входнни данни, изведете:
+
+- общия брой редове
+- третия ред
+- последното поле от всеки ред
+- последното поле на последния ред
+- всеки ред, който има повече от 4 полета
+- всеки ред, чието последно поле е по-голямо от 4
+- общия брой полета във всички редове
+- броя редове, в които се среща низът Beth
+- най-голямото трето поле и редът, който го съдържа
+- всеки ред, който има поне едно поле
+- всеки ред, който има повече от 17 знака
+- броя на полетата във всеки ред и самият ред
+- първите две полета от всеки ред, с разменени места
+- всеки ред така, че първите две полета да са с разменени места
+- всеки ред така, че на мястото на първото поле да има номер на реда
+- всеки ред без второто поле
+- за всеки ред, сумата от второ и трето поле
+- сумата на второ и трето поле от всеки ред
+
+- cat /etc/passwd | awk 'END { print NR } '
+- cat /etc/passwd | awk 'NR == 3 { print $0 }'
+- cat /etc/passwd | awk -F : 'END { print $NF }'
+- cat /etc/passwd | awk -F : 'NF > 4 { print $0 }'
+- cat /etc/passwd | awk -F : 'length($NF) > 4 { print $0 }'
+- cat /etc/passwd | awk -F : 'BEGIN { count = 0} { count += NF} END { print count}'
+- cat /etc/passwd | awk -F : '$0~/Beth/ {print $0}'
+- cat /etc/passwd | awk -v MAX=0 -v LINE='' -F : '$3 > MAX {MAX = $3; LINE=NR} END { print MAX, " - ", LINE }'
+- cat /etc/passwd | awk -F ':' 'NF >= 1 { print $0}'
+- cat /etc/passwd | awk -F ':' 'length($0) > 17 { print $0}'
+- cat /etc/passwd | awk -F ':' '{ print NF, " - ", NR }'
+- cat /etc/passwd | awk -F ':' '{print $2, $1}'
+- cat /etc/passwd | awk -F ':' -v placeholder="" '{placeholder=$1; $1=$2; $2=placeholder; print $0}'
+- cat /etc/passwd | awk -F ':' '{$1=NR; print $0 }'
+- cat /etc/passwd | awk -F ':' '{$2=""; print $0 }'
+- cat /etc/passwd | awk -F ':' '{print $2 + $3 }'
+- cat /etc/passwd | awk -F ':' -v SUM=0 '{SUM+=$3 + $4} END { print SUM }'
+
 
 
