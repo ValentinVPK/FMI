@@ -262,3 +262,201 @@ find ~ -maxdepth 1 -type f -printf '%T@ %p\n' | sort -n | tail -n 10
 34. да приемем, че файловете, които съдържат C код, завършват на `.c` или `.h`.
 Колко на брой са те в директорията `/usr/include`?
 Колко реда C код има в тези файлове?
+
+find /usr/include -type f -name '*.[hc]' -exec cat {} ';' | wc -l
+
+35.  Даден ви е ASCII текстов файл - /etc/services. Отпечатайте хистограма на 10-те най-често срещани думи.
+Дума наричаме непразна последователност от букви. Не правим разлика между главни и малки букви.
+Хистограма наричаме поредица от редове, всеки от които има вида:
+<брой срещания> <какво се среща толкова пъти>
+
+cat /etc/services | egrep -o '[[:alpha:]]+' | sort | uniq -c | sort -nr | head -n 10
+
+36. Вземете факултетните номера на студентите (описани във файла
+<РЕПО>/exercises/data/mypasswd.txt) от СИ и ги запишете във файл si.txt сортирани.
+
+Студент е част от СИ, ако home директорията на този потребител (според
+<РЕПО>/exercises/data/mypasswd.txt) се намира в /home/SI директорията.
+
+cat mypasswd | grep '/home/SI' | cut -d : -f 1| tr -d 's' > si.txt
+
+37. За всяка група от /etc/group изпишете "Hello, <група>", като ако това е вашата група, напишете "Hello, <група> - I am here!".
+
+cat /etc/group | awk -F ':' '{ if ($1 == "students") { print "Hello, ", $1, " - I am here!"} else { print "Hello, ", $1}}'
+
+38. Shell Script-овете са файлове, които по конвенция имат разширение .sh. Всеки
+такъв файл започва с "#!<interpreter>" , където <interpreter> указва на
+операционната система какъв интерпретатор да пусне (пр: "#!/bin/bash",
+"#!/usr/bin/python3 -u").
+
+Намерете всички .sh файлове в директорията `/usr` и нейните поддиректории, и
+проверете кой е най-често използваният интерпретатор.
+
+find /usr -type f -name '*.sh' -exec cat {} ';' | egrep -o '#!.*' | tr -d ' ' | sort | uniq -c | sort -rn | head -n 1 | tr -d '[0-9]* #!'
+
+39. а) Изведете GID-овете на 5-те най-големи групи спрямо броя потребители, за които
+съответната група е основна (primary).
+
+б). (*) Изведете имената на съответните групи.
+
+Hint: /etc/passwd
+
+a) cat /etc/passwd | awk -F ':' '{ print $4 }' | sort | uniq -c | sort -rn | head -n 5 | awk '{ print $2 }'
+
+б) cat /etc/passwd | awk -F ':' '{ print $4 }' | sort | uniq -c | sort -rn | head -n 5 | awk '{ print $2 }' | xargs getent group | awk -F ':' '{ print $3, " - ", $1}'
+
+40. Направете файл eternity. Намерете всички файлове, намиращи се във вашата home
+директория и нейните поддиректории, които са били модифицирани в последните
+15мин (по възможност изключете .).  Запишете във eternity името (път) на
+файла и времето (unix time) на последната промяна.
+
+find ~ -mindepth 2 -type f -mmin 15 -printf '%p %T@\n' > eternity
+
+41. Копирайте файл <РЕПО>/exercises/data/population.csv във вашата home директория.
+
+wget https://raw.githubusercontent.com/avelin/fmi-os/master/exercises/data/population.csv
+
+42. Използвайки файл population.csv, намерете колко е общото население на света
+през 2008 година. А през 2016?
+
+cat population.csv | tail -n +1 | awk -F , -v year=2008 -v count=0 '$3 == year { count+=$4 } END { print count} '
+
+43. Използвайки файл population.csv, намерете през коя година в България има най-много население.
+
+cat population.csv | grep Bulgaria | sort -rn -t , -k 4 | head -n 1
+
+44. Използвайки файл population.csv, намерете коя държава има най-много население през 2016. А коя е с най-малко население?
+(Hint: Погледнете имената на държавите)
+
+cat population.csv | tail -n +1 | grep ,2016, | sed 's/, / /g' | sort -nr -t ',' -k 4 | head -n 1
+
+45. Използвайки файл population.csv, намерете коя държава е на 42-ро място по
+население през 1969. Колко е населението й през тази година?
+
+cat population.csv | grep ,1969, | sed 's/, / /g' | sort -nr -t ',' -k 4 | awk 'NR==42 { print $0}'
+
+46. В home директорията си изпълнете командата
+curl -o songs.tar.gz "http://fangorn.uni-sofia.bg/misc/songs.tar.gz"
+
+47.Да се разархивира архивът songs.tar.gz в директория songs във вашата home директория.
+
+tar -xf ~/songs.tar.gz
+
+48. Да се изведат само имената на песните.
+
+find ~/songs -type f -printf '%f\n' | tr -d '.ogg'
+
+49. Имената на песните да се направят с малки букви, да се заменят спейсовете с
+долни черти и да се сортират.
+
+find ~/songs -type f -printf '%f\n' | tr '[A-Z]' '[a-z]' | tr -d '.ogg' |  tr ' ' '_' | sort
+
+50. Да се изведат всички албуми, сортирани по година.
+
+find ~/songs -type f -printf '%f\n' | egrep -o '\([[:alpha:] ]*, [0-9]+\)' | tr -d '\(\)' | sort -nr -t ',' -k 2 | cut -d ',' -f 1
+
+51. Да се преброят/изведат само песните на Beatles и Pink.
+
+find ~/songs -type f -printf '%f\n' | tr -d '.ogg' | egrep '^(Beatles|Pink) - ' | sort
+
+52. Да се направят директории с имената на уникалните групи. За улеснение, имената
+от две думи да се напишат слято:
+
+find ~/songs -type f -printf '%f\n' | cut -d '-' -f 1 | tr -d ' ' | sort | uniq | xargs mkdir
+
+53. Напишете серия от команди, които извеждат детайли за файловете и директориите в
+текущата директория, които имат същите права за достъп както най-големият файл
+в /etc директорията.
+
+find . -maxdepth 1 -perm $(find /etc -maxdepth 1 -type f -printf "%p %s\n" | sort -nr -t ' ' -k 2 | head -n 1 | cut -d ' ' -f 1 | xargs stat -c "%a")
+
+54. Дадени са ви 2 списъка с email адреси - първият има 12 валидни адреса, а
+вторията има само невалидни. Филтрирайте всички адреси, така че да останат
+само валидните. Колко кратък регулярен израз можете да направите за целта?
+
+Валидни email адреси (12 на брой):
+email@example.com
+firstname.lastname@example.com
+email@subdomain.example.com
+email@123.123.123.123
+1234567890@example.com
+email@example-one.com
+_______@example.com
+email@example.name
+email@example.museum
+email@example.co.jp
+firstname-lastname@example.com
+unusually.long.long.name@example.com
+
+Невалидни email адреси:
+#@%^%#$@#$@#.com
+@example.com
+myemail
+Joe Smith <email@example.com>
+email.example.com
+email@example@example.com
+.email@example.com
+email.@example.com
+email..email@example.com
+email@-example.com
+email@example..com
+Abc..123@example.com
+(),:;<>[\]@example.com
+just"not"right@example.com
+this\ is"really"not\allowed@example.com
+
+egrep '^([\w]+([\.\-]?[\w]+)+)@([\w]+([\.\-]?[\w]+)+)$'
+
+55. Посредством awk, използвайки emp.data (от 03-a-6000.txt) за входнни данни,
+изведете:
+
+- всеки ред, като полетата са в обратен ред
+
+(Разгледайте for цикли в awk)
+
+cat emp.data | awk '{ for(i=NF; i>0; i--) printf "%s ", $i; print ""}'
+
+56. Копирайте <РЕПО>/exercises/data/ssa-input.txt във вашата home директория.
+Общият вид на файла е:
+
+- заглавна част:
+	Smart Array P440ar in Slot 0 (Embedded)
+
+- една или повече секции за масиви:
+	Array A
+	Array B
+	...
+	като буквата (A, B, ...) е името на масива
+
+- във всяка таква секция има една или повече подсекции за дискове:
+	physicaldrive 2I:0:5
+	physicaldrive 2I:0:6
+	...
+
+	като 2I:0:5 е името на диска
+
+- във всяка подсекция за диск има множество параметри във вида:
+	key name: value
+	като за нас са интересни само:
+
+		Current Temperature (C): 35
+		Maximum Temperature (C): 36
+
+Напишете поредица от команди която обработва файл в този формат, и генерира
+следният изход:
+
+A-2I:0:5 35 36
+A-2I:0:6 34 35
+B-1I:1:1 35 50
+B-1I:1:2 35 49
+
+x-yyyyyy zz ww
+
+където:
+	- x е името на масива
+	- yyyyyy е името на диска
+	- zz е current temperature
+	- ww е max temperature
+
+
+cat ssa-input.txt | tail -n +4 | grep -v '^$' | tr -s ' ' | awk -v array="" -v drive="" -v curr="" -v max="" '{if ($0~/Array/){printf ("%s-%s %s %s\n", array, drive, curr, max);array=$2} else if($0~/physicaldrive/){printf ("%s-%s %s %s\n", array, drive, curr, max);drive=$2} else if($0~/Current Temperature/){curr=$NF} else if($0~/Maximum Temperature/){max=$NF}} END {printf ("%s-%s %s %s\n", array, drive, curr, max)}' | tail -n +3
