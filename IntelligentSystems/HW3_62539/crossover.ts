@@ -1,0 +1,148 @@
+import { Individual } from "./individual";
+
+/**
+ * Performs a one-point crossover on two parent individuals to produce two offspring.
+ * A random crossover point is selected, and genes are swapped between the parents
+ * at that point to create new children. This method preserves large contiguous segments
+ * of parent genes while introducing moderate diversity in the offspring.
+ *
+ * @param firstParent - The first parent individual, containing genes and fitness.
+ * @param secondParent - The second parent individual, containing genes and fitness.
+ * @returns An array containing two offspring individuals with combined genes.
+ *
+ * @throws An error if the parents have different numbers of genes.
+ */
+export function onePointCrossover(
+  firstParent: Individual,
+  secondParent: Individual
+) {
+  if (firstParent.genes.length !== secondParent.genes.length) {
+    throw new Error(
+      "Parents must have the same number of genes for crossover."
+    );
+  }
+
+  const crossoverPoint =
+    Math.floor(Math.random() * (firstParent.genes.length - 1)) + 1;
+
+  const firstChildGenes: boolean[] = [];
+  const secondChildGenes: boolean[] = [];
+
+  for (let i = 0; i < firstParent.genes.length; i++) {
+    if (i < crossoverPoint) {
+      firstChildGenes[i] = firstParent.genes[i];
+      secondChildGenes[i] = secondParent.genes[i];
+    } else {
+      firstChildGenes[i] = secondParent.genes[i];
+      secondChildGenes[i] = firstParent.genes[i];
+    }
+  }
+
+  const firstChild: Individual = { genes: firstChildGenes, fitness: 0 };
+  const secondChild: Individual = { genes: secondChildGenes, fitness: 0 };
+
+  return [firstChild, secondChild];
+}
+
+/**
+ * Performs a two-point crossover on two parent individuals to produce two offspring.
+ * Two random crossover points are selected, and the genes between these points are swapped
+ * between the parents. This method introduces greater diversity than one-point crossover
+ * by allowing multiple segments of genes to be exchanged.
+ *
+ * @param firstParent - The first parent individual, containing genes and fitness.
+ * @param secondParent - The second parent individual, containing genes and fitness.
+ * @returns An array containing two offspring individuals with combined genes.
+ *
+ * @throws An error if the parents have different numbers of genes.
+ */
+export function twoPointCrossover(
+  firstParent: Individual,
+  secondParent: Individual
+) {
+  if (firstParent.genes.length !== secondParent.genes.length) {
+    throw new Error(
+      "Parents must have the same number of genes for crossover."
+    );
+  }
+
+  const geneLength = firstParent.genes.length;
+
+  const getRandomPoint = (): number =>
+    Math.floor(Math.random() * (geneLength - 1)) + 1;
+
+  let point1 = getRandomPoint();
+  let point2 = getRandomPoint();
+
+  while (point1 === point2) {
+    point2 = getRandomPoint();
+  }
+
+  if (point1 > point2) {
+    [point1, point2] = [point2, point1];
+  }
+
+  const firstChildGenes: boolean[] = [];
+  const secondChildGenes: boolean[] = [];
+
+  for (let i = 0; i < geneLength; i++) {
+    if (i < point1) {
+      firstChildGenes[i] = firstParent.genes[i];
+      secondChildGenes[i] = secondParent.genes[i];
+    } else if (i < point2) {
+      firstChildGenes[i] = secondParent.genes[i];
+      secondChildGenes[i] = firstParent.genes[i];
+    } else {
+      firstChildGenes[i] = firstParent.genes[i];
+      secondChildGenes[i] = secondParent.genes[i];
+    }
+  }
+
+  const firstChild: Individual = { genes: firstChildGenes, fitness: 0 };
+  const secondChild: Individual = { genes: secondChildGenes, fitness: 0 };
+
+  return [firstChild, secondChild];
+}
+
+/**
+ * Performs a uniform crossover on two parent individuals to produce two offspring.
+ * Each gene in the offspring is independently inherited from one of the parents,
+ * with a 50% probability for each parent. This method maximizes genetic diversity
+ * by creating fine-grained mixing of parent traits.
+ *
+ * @param firstParent - The first parent individual, containing genes and fitness.
+ * @param secondParent - The second parent individual, containing genes and fitness.
+ * @returns An array containing two offspring individuals with combined genes.
+ *
+ * @throws An error if the parents have different numbers of genes.
+ */
+export function uniformCrossover(
+  firstParent: Individual,
+  secondParent: Individual
+) {
+  if (firstParent.genes.length !== secondParent.genes.length) {
+    throw new Error(
+      "Parents must have the same number of genes for crossover."
+    );
+  }
+
+  const geneLength = firstParent.genes.length;
+
+  const firstChildGenes: boolean[] = [];
+  const secondChildGenes: boolean[] = [];
+
+  for (let i = 0; i < geneLength; i++) {
+    if (Math.random() < 0.5) {
+      firstChildGenes[i] = firstParent.genes[i];
+      secondChildGenes[i] = secondParent.genes[i];
+    } else {
+      firstChildGenes[i] = secondParent.genes[i];
+      secondChildGenes[i] = firstParent.genes[i];
+    }
+  }
+
+  const firstChild: Individual = { genes: firstChildGenes, fitness: 0 };
+  const secondChild: Individual = { genes: secondChildGenes, fitness: 0 };
+
+  return [firstChild, secondChild];
+}
